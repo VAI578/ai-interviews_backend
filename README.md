@@ -19,6 +19,20 @@ instance directory. Set `DATABASE_URL` in `backend\.env` to use another
 SQLAlchemy-supported database. `CORS_ORIGINS` accepts a comma-separated list;
 the default allows the Vite development server.
 
+## Deploy on Render
+
+The backend uses package-relative imports, so Gunicorn must load it as
+`backend.app`, not as the top-level module `app`.
+
+If the Render service's **Root Directory** is `backend`, use:
+
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `gunicorn --pythonpath .. backend.app:app`
+
+If **Root Directory** is blank and the commands run from the repository root,
+use `pip install -r backend/requirements.txt` as the build command and
+`gunicorn backend.app:app` as the start command.
+
 ## Endpoints
 
 - `GET /api/health` — liveness check
